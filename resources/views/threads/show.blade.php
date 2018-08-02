@@ -35,6 +35,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8 mb-4">
                 <form method="POST" action="{{ $thread->path() . '/replies'}}">
+                    @csrf
                     <div class="form-group">
                       <textarea class="form-control" id="body" name="body" placeholder="Have something to say?" rows="5"></textarea>
                         <button type="submit" class="btn btn-primary">Post</button>
