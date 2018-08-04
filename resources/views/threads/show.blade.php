@@ -21,9 +21,10 @@
                 </div>
             </div>
 
-            @foreach ($thread->replies as $reply)
+            @foreach ($replies as $reply)
                 @include('threads.reply')
             @endforeach
+            {{ $replies->links() }}
 
             @if (auth()->check())
             <form method="POST" action="{{ $thread->path() . '/replies'}}">
