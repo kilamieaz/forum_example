@@ -46,7 +46,8 @@ class FavoritesController extends Controller
         //     'favorites_id' => $reply->id,
         //     'favorited_type' => get_class($reply)
         // ]);
-        return $reply->favorite(auth()->id());
+        $reply->favorite(auth()->id());
+        return back();
     }
 
     /**
