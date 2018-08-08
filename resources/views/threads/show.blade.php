@@ -12,11 +12,13 @@
                                 {{ $thread->creator->name }}    
                             </a>posted: {{ $thread->title }}
                         </span>
+                        @can('update', $thread)
                         <form action="{{ $thread->path() }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-link">Delete Thread</button>
                         </form>
+                        @endcan
                     </div>
                 </div>
 
@@ -24,13 +26,13 @@
                     {{ $thread->body }}
                 </div>
             </div>
-
             @foreach ($replies as $reply)
                 @include('threads.reply')
             @endforeach
             {{ $replies->links() }}
 
             @if (auth()->check())
+            <br>
             <form method="POST" action="{{ $thread->path() . '/replies'}}">
                 @csrf
                 <div class="form-group">
