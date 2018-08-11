@@ -20,11 +20,13 @@
 
         <div class="card-body">
             <div v-if="editing">
-                <textarea class="form-control" v-model="body"></textarea>
+                <div class="form-group">
+                    <textarea class="form-control" v-model="body"></textarea>
+                </div>
+                <button type="submit" class="btn btn-xs btn-primary" @click="update">Update</button>
+                <button type="submit" class="btn btn-xs btn-link" @click="editing = false">Cancel</button>
             </div>
-            <div v-else>
-                {{ $reply->body }}
-            </div>
+            <div v-else v-text="body"></div>
         </div>
         @can('update', $reply)
             <div class="card-footer level">
