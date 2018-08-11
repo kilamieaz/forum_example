@@ -78,7 +78,7 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $reply = create('App\Reply', ['user_id' => auth()->id()]);
         $updatedReply = 'You been changed, fool.';
-        $this->patch("/replies/$reply->id", ['body' => $updatedRep]);
-        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedRep]);
+        $this->patch("/replies/$reply->id", ['body' => $updatedReply]);
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedReply]);
     }
 }
