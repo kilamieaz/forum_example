@@ -14,6 +14,7 @@ export default {
                 body: this.body
             });
             this.editing = false;
+            flash('Updated!')
         }
     }
 }
