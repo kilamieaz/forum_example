@@ -1,4 +1,4 @@
-<reply :attributes="{{ $reply }}" inline-template>
+<reply :attributes="{{ $reply }}" inline-template v-clock>
     <div id="reply-{{ $reply->id }}" class="card my-4">
         <div class="card-header">
             <div class="level">
@@ -8,12 +8,13 @@
                     </a> said  {{ $reply->created_at->diffForHumans() }}...
                 </h5>
                 <div>
-                    <form method="POST" action="/replies/{{ $reply->id }}/favorites">
+                    <favorite :reply="{{ $reply }}"></favorite>
+                    {{-- <form method="POST" action="/replies/{{ $reply->id }}/favorites">
                         @csrf
                         <button type="submit" class="btn btn-default" {{ $reply->isFavorited() ? 'disabled' : ''}}>
                             {{ $reply->favorites_count }} {{ str_plural('Favorite', $reply->favorites_count) }}
                         </button>  
-                    </form>
+                    </form> --}}
                 </div>
             </div>
         </div>
@@ -31,11 +32,7 @@
         @can('update', $reply)
             <div class="card-footer level">
                 <button type="button" class="btn btn-xs mr-1" @click="editing = true">Edit</button>
-                <form action="/replies/{{ $reply->id }}">
-                    @csrf
-                    @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
+                <button type="button" class="btn btn-danger mr-1" @click="destroy">Delete</button>
             </div>
         @endcan
     </div>
