@@ -7,6 +7,7 @@ trait RecordsActivity
     // include in boot thread (boot:nameTrait)
     protected static function bootRecordsActivity()
     {
+        // boot will run when "model" run
         if (auth()->guest()) {
             return;
         }
