@@ -10,7 +10,7 @@ export default {
     props: ['reply'],
     data() {
         return {
-            count: this.reply.count,
+            count: this.reply.favoritesCount,
             isFavorited: this.reply.isFavorited
         }
     },
