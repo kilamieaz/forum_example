@@ -13,19 +13,26 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <script>
+        window.App = {!! json_encode([
+            'user' => Auth::user(),
+            'signedIn' => Auth::check()
+        ]) !!}
+    </script>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style>
+        body { padding-bottom: 100px ;}
+        .level { display:flex; align-items:center;}
+        .flex { flex: 1;}
+        [v-clock] { display:none;}
+    </style>
 </head>
-<style>
-    body { padding-bottom: 100px ;}
-    .level { display:flex; align-items:center;}
-    .flex { flex: 1;}
-    [v-clock] { display:none;}
-</style>
 <body style="padding-bottom: 100px;">
     <div id="app">
         @include('layouts.partials._nav')

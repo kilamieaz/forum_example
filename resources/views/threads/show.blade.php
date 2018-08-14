@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -26,10 +27,8 @@
                     {{ $thread->body }}
                 </div>
             </div>
-            @foreach ($replies as $reply)
-                @include('threads.reply')
-            @endforeach
-            {{ $replies->links() }}
+            <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+            {{-- {{ $replies->links() }}  --}}
 
             @if (auth()->check())
             <br>
@@ -48,11 +47,13 @@
             <div class="card">
                 <div class="card-body">
                     This thread was published {{  $thread->created_at->diffForHumans()}} by 
-                    <a href="#">{{ $thread->creator->name }}</a>, and currently has {{ $thread->replies_count }} 
+                    <a href="#">{{ $thread->creator->name }}</a>
+                    , and currently has <span v-text="repliesCount"></span> 
                     {{ str_plural('comment', $thread->replies_count) }}.
                 </div>
             </div>
         </div>
     </div>
 </div>
+</thread-view>
 @endsection
