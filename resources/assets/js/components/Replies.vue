@@ -14,6 +14,7 @@ export default {
     components: { Reply, NewReply },
     data() {
         return {
+            dataSet: false,
             items: [],
             endpoint: location.pathname + '/replies'
         }
@@ -23,22 +24,19 @@ export default {
     },
     methods: {
         fetch() {
-            axios.get(this.url)
+            axios.get(this.url())
             .then(this.refresh);
         },
-        refresh(response) {
-
+        url() {
+            // return location.pathname + '/replies'
+            return `${location.pathname}/replies`;
         },
-        add(reply) {
-            this.items.push(reply);
-            this.$emit('added');
-            flash('Reply was added!')
+        refresh({data}) {
+            // console.log(data.data);
+            this.dataSet = data;
+            this.items = data.data;
         },
-        remove(index) {
-            this.items.splice(index, 1);
-            this.$emit('removed');
-            flash('Reply was deleted!')
-        }
+        
     }
 }
 </script>
