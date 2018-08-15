@@ -3,19 +3,21 @@
         <div v-for="(reply, index) in items" :key="reply.id">
             <reply :data="reply" @deleted="remove(index)"></reply>
         </div>
-        <new-reply :endpoint="endpoint" @created="add"></new-reply>
+        <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+        <new-reply @created="add, fetch"></new-reply>
     </div>
 </template>
 
 <script>
 import Reply from './Reply.vue';
 import NewReply from './NewReply.vue';
+import collection from '../mixins/collection';
 export default {
     components: { Reply, NewReply },
+    mixins: [collection],
     data() {
         return {
             dataSet: false,
-            items: [],
             endpoint: location.pathname + '/replies'
         }
     },
@@ -23,20 +25,23 @@ export default {
         this.fetch()
     },
     methods: {
-        fetch() {
-            axios.get(this.url())
+        fetch(page) {
+            axios.get(this.url(page))
             .then(this.refresh);
         },
-        url() {
+        url(page = 1) {
+            if (! page) {
+                let query = location.search.match(/page=(\d+)/);
+                page = query ? query[1] : 1;
+            }
             // return location.pathname + '/replies'
-            return `${location.pathname}/replies`;
+            return `${location.pathname}/replies?page=${page}`;
         },
         refresh({data}) {
             // console.log(data.data);
             this.dataSet = data;
             this.items = data.data;
         },
-        
     }
 }
 </script>
