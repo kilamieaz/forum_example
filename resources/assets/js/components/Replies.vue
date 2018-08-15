@@ -11,15 +11,24 @@
 import Reply from './Reply.vue';
 import NewReply from './NewReply.vue';
 export default {
-    props: ['data'],
     components: { Reply, NewReply },
     data() {
         return {
-            items: this.data,
+            items: [],
             endpoint: location.pathname + '/replies'
         }
     },
+    created() {
+        this.fetch()
+    },
     methods: {
+        fetch() {
+            axios.get(this.url)
+            .then(this.refresh);
+        },
+        refresh(response) {
+
+        },
         add(reply) {
             this.items.push(reply);
             this.$emit('added');
