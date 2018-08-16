@@ -27,6 +27,7 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 
 //subscribe
 Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->middleware('auth');
+Route::delete('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@destroy')->middleware('auth');
 
 //ini dengan vue
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');
