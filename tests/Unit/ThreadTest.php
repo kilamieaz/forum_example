@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Thread;
 
 class ThreadTest extends TestCase
 {
@@ -53,6 +54,16 @@ class ThreadTest extends TestCase
         $thread->subscribe($userId = 1);
         // then we should be able to fetch all threads that the user has subscribed to.
         $this->assertEquals(1, $thread->subscriptions()->where('user_id', $userId)->count());
+    }
+
+    public function a_thread_can_be_unsubscribed_from()
+    {
+        // given we have a thread
+        $thread = create('App\Thread');
+        // and a user who is subscribed to the Thread
+        $thread->subscribe($userId = 1);
+        $thread->unsubscribe($userId);
+        $this->assertCount(0, $thread->subscriptions);
     }
 
     /** @test */
