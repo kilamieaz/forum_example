@@ -67,6 +67,18 @@ class ThreadTest extends TestCase
     }
 
     /** @test */
+    public function it_knows_if_the_authenticated_user_is_subscribed_to_it()
+    {
+        // given we hav a Thread
+        $thread = create('App\Thread');
+        // and a user who is subscribed to the thread
+        $this->signIn();
+        $this->assertFalse($thread->isSubscribedTo);
+        $thread->subscribe();
+        $this->assertTrue($thread->isSubscribedTo);
+    }
+
+    /** @test */
     public function a_thread_can_add_a_reply()
     {
         $this->thread->addReply([
