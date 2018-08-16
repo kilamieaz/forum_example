@@ -19,11 +19,12 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
-        $this->be($user = factory('App\User')->create());
-        $thread = factory('App\Thread')->create();
-        $reply = factory('App\Reply')->make();
+        $this->signIn();
+        $thread = create('App\Thread');
+        $reply = make('App\Reply', ['thread_id' => $thread->id]);
         $this->post($thread->path() . '/replies', $reply->toArray());
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
