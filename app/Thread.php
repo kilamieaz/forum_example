@@ -13,9 +13,6 @@ class Thread extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('replyCount', function ($builder) {
-            $builder->withCount('replies');
-        });
         static::deleting(function ($thread) {
             $thread->replies->each->delete();
         });
@@ -43,7 +40,9 @@ class Thread extends Model
 
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+        $this->increment('replies_count');
+        return $reply;
     }
 
     // getter
