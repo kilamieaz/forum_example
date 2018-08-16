@@ -9,6 +9,7 @@ class Thread extends Model
     use RecordsActivity;
     protected $guarded = [];
     protected $with = ['creator', 'channel'];
+    protected $appends = ['isSubscribedTo'];
 
     protected static function boot()
     {
