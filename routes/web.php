@@ -24,6 +24,10 @@ Route::get('/threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel}', 'ThreadsController@index');
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
+
+//subscribe
+Route::post('/threads/{channel}/{thread}/subscriptions', 'ThreadSubscriptionsController@store')->middleware('auth');
+
 //ini dengan vue
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');
 //
