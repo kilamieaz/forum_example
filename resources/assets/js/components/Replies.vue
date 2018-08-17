@@ -4,7 +4,7 @@
             <reply :data="reply" @deleted="remove(index)"></reply>
         </div>
         <paginator :dataSet="dataSet" @changed="fetch"></paginator>
-        <new-reply @created="add, fetch"></new-reply>
+        <new-reply @created="fetch"></new-reply>
     </div>
 </template>
 
