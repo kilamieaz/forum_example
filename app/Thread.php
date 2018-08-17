@@ -42,15 +42,13 @@ class Thread extends Model
     public function addReply($reply)
     {
         $reply = $this->replies()->create($reply);
-        $this->increment('replies_count');
+        // prepare notifications for all subscribers
+        $this->subscriptions->filter(function ($sub) use ($reply) {
+            return $sub->user_id != $reply->user_id;
+        })
+        ->each->notify($reply);
         return $reply;
     }
-
-    // getter
-    // public function getReplyCountAttribute()
-    // {
-    //     return $this->replies()->count();
-    // }
 
     //scope
     public function scopeFilter($query, $filters)
@@ -63,6 +61,7 @@ class Thread extends Model
         $this->subscriptions()->create([
             'user_id' => $userId ?: auth()->id()
         ]);
+        return $this;
     }
 
     public function unsubscribe($userId = null)
@@ -77,6 +76,7 @@ class Thread extends Model
         return $this->hasMany(ThreadSubscription::class);
     }
 
+    //getter
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()
