@@ -6,7 +6,6 @@ use App\Thread;
 use App\Channel;
 use Illuminate\Http\Request;
 use App\Filters\ThreadFilters;
-use Illuminate\Support\Carbon;
 
 class ThreadsController extends Controller
 {
@@ -73,8 +72,9 @@ class ThreadsController extends Controller
     {
         // record that the user visited this page.
         // record a timestamp
-        $key = sprintf('users.%s.visits.%s', auth()->id(), $thread->id);
-        cache()->forever($key, Carbon::now());
+        if (auth()->check()) {
+            auth()->user()->read($thread);
+        }
         return view('threads.show', compact('thread'));
     }
 

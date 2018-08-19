@@ -110,6 +110,12 @@ class ThreadTest extends TestCase
     {
         $this->signIn();
         $thread = create('App\Thread');
-        $this->assertTrue($thread->hasUpdatesFor(auth()->id()));
+        tap(auth()->user(), function ($user) use ($thread) {
+            $this->assertTrue($thread->hasUpdatesFor($user));
+            // $key = sprintf('users.%s.visits.%s', $user, $thread->id);
+            // simulate that the user visited the thread
+            $user->read($thread);
+            $this->assertFalse($thread->hasUpdatesFor($user));
+        });
     }
 }
