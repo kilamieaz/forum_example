@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Thread;
 use App\Reply;
+use App\Http\Forms\CreatePostForm;
 
 class RepliesController extends Controller
 {
@@ -40,26 +40,9 @@ class RepliesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostForm $form)
     {
-        // Gate::denies('create', new Reply)
-        if (Gate::denies('create', new Reply)) {
-            return response(
-                'You are posting too frequently. Please take a break. :)',
-                429
-            );
-        }
-        try {
-            request()->validate(['body' => 'required|spamfree']);
-            $reply = $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id()
-            ]);
-        } catch (\Exception $e) {
-            return response('Sorry, your reply could not be saved at this time.', 422);
-        }
-
-        return $reply->load('owner');
+        return $form->persist($thread);
     }
 
     /**
