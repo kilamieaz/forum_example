@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Events\ThreadHasNewReply;
 use App\Events\ThreadReceivedNewReply;
 
-class NotifyThreadSubscribers
+class NotifySubscribers
 {
     /**
      * Handle the event.

@@ -9,16 +9,6 @@ use App\Notifications\YouWereMentioned;
 class NotifyMentionedUsers
 {
     /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Handle the event.
      *
      * @param  ThreadReceivedNewReply  $event
@@ -26,14 +16,13 @@ class NotifyMentionedUsers
      */
     public function handle(ThreadReceivedNewReply $event)
     {
-        // inspect the body of the reply for username mentions
-        preg_match_all('/\@([^\s\.]+)/', $event->reply->body, $matches);
-        // and then for each mentioned user, notify them.
-        foreach ($matches[1] as $name) {
-            $user = User::whereName($name)->first();
-            if ($user) {
-                $user->notify(new YouWereMentioned($event->reply));
-            }
-        }
+        collect($event->reply->mentionedUsers())
+        ->map(function ($name) {
+            return User::where('name', $name)->first();
+        })
+        ->filter()
+        ->each(function ($user) use ($event) {
+            $user->notify(new YouWereMentioned($event->reply));
+        });
     }
 }

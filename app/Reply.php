@@ -43,4 +43,10 @@ class Reply extends Model
         // gt = greater than (from carbon)
         return $this->created_at->gt(Carbon::now()->subMinute());
     }
+
+    public function mentionedUsers()
+    {
+        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+        return $matches[1];
+    }
 }
