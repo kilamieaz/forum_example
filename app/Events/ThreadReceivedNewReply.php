@@ -4,7 +4,7 @@ namespace App\Events;
 
 use Illuminate\Queue\SerializesModels;
 
-class ThreadHasNewReply
+class ThreadReceivedNewReply
 {
     use SerializesModels;
     // var $thread, $reply;

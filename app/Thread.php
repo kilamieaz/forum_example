@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Events\ThreadHasNewReply;
+use App\Events\ThreadReceivedNewReply;
 
 class Thread extends Model
 {
@@ -43,11 +43,7 @@ class Thread extends Model
     public function addReply($reply)
     {
         $reply = $this->replies()->create($reply);
-        // this for simple way
-        // $this->notifySubscribers($reply);
-        // this for more complex
-        event(new ThreadHasNewReply($this, $reply)) ;
-
+        event(new ThreadReceivedNewReply($this, $reply));
         return $reply;
     }
 
