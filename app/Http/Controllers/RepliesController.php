@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Thread;
 use App\Reply;
 use App\Http\Forms\CreatePostForm;
+use App\Notifications\YouWereMentioned;
+use App\User;
 
 class RepliesController extends Controller
 {
@@ -42,7 +44,19 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostForm $form)
     {
-        return $form->persist($thread);
+        $reply = $form->persist($thread);
+        // inspect the body of the reply for username mentions
+        preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
+        $names = $matches[1];
+
+        // and then for each mentioned user, notify them.
+        foreach ($names as $name) {
+            $user = User::whereName($name)->first();
+            if ($user) {
+                $user->notify(new YouWereMentioned($reply));
+            }
+        }
+        return $reply;
     }
 
     /**
