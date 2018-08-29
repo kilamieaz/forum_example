@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import 'at.js';
+import 'jquery.caret';
 export default {
     data() {
         return {
@@ -31,6 +33,21 @@ export default {
             return window.App.signedIn;
         }
     },
+
+    mounted() {
+        $('#body').atwho({
+            at: "@",
+            delay: 750,
+            callbacks: {
+                remoteFilter: function(query, callback) {
+                    $.getJSON("/api/users", {name: query}, function(username) {
+                        callback(username)
+                    });
+                }
+            }
+        })
+    },
+
     methods: {
         addReply() {
             axios.post(location.pathname + '/replies', { body: this.body })
