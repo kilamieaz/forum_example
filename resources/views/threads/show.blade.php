@@ -10,6 +10,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="level">
+                        <img src="{{ Storage::url($thread->creator->avatar()) }}" alt="{{ $thread->creator->name }}" width="25" height="25" class="mr-2">
                         <span class="flex">
                             <a href="{{ route('profile', $thread->creator) }}">
                                 {{ $thread->creator->name }}    

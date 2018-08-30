@@ -13,6 +13,7 @@
                         <button type="submit" class="btn btn-primary">Add Avatar</button>
                     </form>
                 @endcan
+                <img src="{{ Storage::url($profileUser->avatar()) }}" width="50" height="50">
             </div>
             <br>
             @forelse($activities as $date => $activity)
